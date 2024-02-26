@@ -1,14 +1,13 @@
-import { useState } from 'react'
-import './App.css'
-import { Reset } from 'styled-reset'
+import { useState } from 'react';
+import './assets/css/App.css';
+import { Reset } from 'styled-reset';
 
 function App() {
-
   return (
     <>
-      <Reset/>
+      <Reset />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
