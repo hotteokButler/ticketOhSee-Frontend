@@ -1,7 +1,30 @@
 @tailwind base;
 @tailwind components;
-
+/* common */
 #wrapper {
   @apply max-w-screen-xl mx-auto;
+}
+
+/* header */
+.logo {
+  @apply w-48 h-12 bg-red-300 rounded-sm leading-[3] text-center;
+}
+.header {
+  @apply max-w-screen-xl mx-auto flex items-center py-5;
+}
+.input_search {
+  @apply flex items-center relative w-3/4 max-w-screen-sm mx-5;
+}
+.input_search label {
+  @apply absolute -top-1/2 left-0 translate-y-1/2 hidden;
+}
+.input_search input {
+  @apply inline-block border border-gray-300 rounded-full w-full leading-normal text-xl py-2 px-5;
+}
+.input_search button {
+  @apply absolute top-1/2 right-4 -translate-y-1/2 text-gray-400 text-xl;
+}
+.header_tab {
+  @apply ml-auto;
 }
 @tailwind utilities;

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { Reset } from 'styled-reset';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './util/router.config.tsx';
+import './assets/css/main.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

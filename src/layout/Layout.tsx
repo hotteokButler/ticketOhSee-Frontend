@@ -1,12 +1,14 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
+import Header from '../components/header/Header'
+
 
 export default function Layout() {
   return (
     <>
     {/* header */}
-    <h1>layout</h1>
-    <div id="wrapper" className='max-w-screen-xl mx-auto'>
+    <Header/>
+    <div id="wrapper">
       <Outlet/>
     </div>
     </>

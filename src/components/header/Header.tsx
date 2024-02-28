@@ -1,9 +1,16 @@
 import React from 'react';
+import Logo from './Logo';
+import Search from './Search';
+import HeaderMenu from './HeaderMenu';
 
 export default function Header() {
   return (
     <>
-      <header></header>
+      <header className='header'>
+        <Logo/>
+        <Search/>
+        <HeaderMenu/>
+      </header>
     </>
   );
 }
