@@ -6,7 +6,7 @@ export default function Layout() {
     <>
     {/* header */}
     <h1>layout</h1>
-    <div id="wrapper">
+    <div id="wrapper" className='max-w-screen-xl mx-auto'>
       <Outlet/>
     </div>
     </>
