@@ -4,6 +4,22 @@
 #wrapper {
   @apply max-w-screen-xl mx-auto;
 }
+.error_pop {
+  @apply fixed bottom-4 left-1/2 -translate-x-1/2 flex items-center justify-center p-2 bg-white max-w-xs w-1/2 h-16 rounded-md ring-2 ring-orange-900 shadow-lg text-orange-700;
+}
+.error {
+  @apply flex items-center justify-start p-2 text-orange-700;
+}
+.error svg {
+  @apply inline-block mr-1 mb-1 text-lg;
+}
+.error_pop svg {
+  @apply block mr-1 mb-1 text-xl;
+}
+.error span,
+.error_pop span {
+  @apply text-lg;
+}
 
 /* header */
 .logo {
@@ -28,10 +44,18 @@
   @apply ml-auto;
 }
 .header_tab ul {
-  @apply flex items-center
+  @apply flex items-center;
 }
 .header_tab li {
   @apply text-sm mx-2 hover:text-orange-600 hover:font-bold;
 }
-
+.sub_title {
+  @apply text-center font-medium text-2xl pt-3 pb-8;
+}
+.sub_logo {
+  @apply flex justify-center pt-7 pb-20;
+}
+.common_btn {
+  @apply px-2 pt-4 pb-3 rounded-md leading-relaxed align-middle block w-full text-lg;
+}
 @tailwind utilities;

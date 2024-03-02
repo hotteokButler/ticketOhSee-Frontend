@@ -1,0 +1,21 @@
+.login_wrap {
+  @apply flex flex-col justify-center items-center max-w-96 mx-auto w-4/5;
+}
+.login_wrap form {
+  @apply block w-full;
+}
+.login_wrap label {
+  @apply hidden;
+}
+.login_input {
+  @apply block border text-lg px-3 py-4 rounded-md leading-snug w-full border-gray-300 focus:border-orange-600 focus:border-2 focus:outline-none active:border-2 active:outline-none active:border-orange-600;
+}
+.login_tab {
+  @apply flex items-center w-full justify-start text-sm;
+}
+.login_tab li {
+  @apply pr-3 mr-2 mt-4 tracking-tight text-slate-400 relative hover:text-orange-900 hover:underline-offset-2 hover:underline;
+}
+.login_tab li:not(:last-child) {
+  @apply after:content-['\|'] after:absolute after:right-0 after:clear-both after:text-sm after:text-slate-400; 
+}
