@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Reset } from 'styled-reset';
-import { RouterProvider } from 'react-router-dom';
-import { router } from './util/router.config.tsx';
 import './assets/css/main.css';
+import App from './App.tsx';
+import { RecoilRoot } from 'recoil';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Reset />
-    <RouterProvider router={router} />
+    <RecoilRoot>
+      <App />
+    </RecoilRoot>
   </React.StrictMode>
 );

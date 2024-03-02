@@ -7,7 +7,7 @@
 
 /* header */
 .logo {
-  @apply w-48 h-12 bg-red-300 rounded-sm leading-[3] text-center;
+  @apply w-48 h-12 bg-orange-400 rounded-sm leading-[3] text-center;
 }
 .header {
   @apply max-w-screen-xl mx-auto flex items-center py-5;
@@ -27,4 +27,11 @@
 .header_tab {
   @apply ml-auto;
 }
+.header_tab ul {
+  @apply flex items-center
+}
+.header_tab li {
+  @apply text-sm mx-2 hover:text-orange-600 hover:font-bold;
+}
+
 @tailwind utilities;
