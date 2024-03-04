@@ -1,0 +1,9 @@
+.signup_wrap {
+  @apply flex flex-col justify-center items-center max-w-96 mx-auto w-4/5;
+}
+.valid_check_btn {
+  @apply text-xs leading-normal tracking-tight text-white bg-slate-400 inline-block py-1 px-2 rounded-sm hover:bg-slate-900;
+}
+.signup_input_con input::placeholder {
+  @apply text-xs;
+}
