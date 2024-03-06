@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import Logo from '../../src/components/header/Logo';
 import '../../src/assets/css/signup.css';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import Button from '../../src/components/Button';
+import SearchPost from '../../src/components/SearchPost';
+import ErrorMessage from '../../src/components/ErrorMessage';
 
 interface ISignUpForm {
   user_id: string;
@@ -12,30 +14,77 @@ interface ISignUpForm {
   email: string;
   phone: number | string;
   address: string;
+  detail_address?: string;
 }
+
+type IIdExistEnum = 'unChecked' | 'canUse' | 'alreadyExist';
+type IPhoneValificationEnum = 'unChecked' | 'checked' | 'denied';
 
 export default function SignUp() {
   const {
     register,
-    setValue,
     watch,
     handleSubmit,
+    setError,
     formState: { errors },
-  } = useForm<ISignUpForm>({ mode: 'onChange' });
-  const onSubmit = handleSubmit((data) => console.log(data));
+  } = useForm<ISignUpForm>({ mode: 'all' });
 
   //아이디 중복체크
-  const [idExist, setIdExist] = useState(false);
-  const checkIdExists = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const [idExist, setIdExist] = useState<IIdExistEnum>('unChecked');
+  const checkIdExists = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+    setIdExist('canUse');
   };
 
   //전화번호 인증 확인체크
-  const [phoneValid, setPhoneValid] = useState(false);
-  const checkValidPhone = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const [phoneValid, setPhoneValid] = useState<IPhoneValificationEnum>('unChecked');
+  const checkValidPhone = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+    setPhoneValid('checked');
   };
 
+  //주소
+  const [userAddress, setUserAddress] = useState('');
+  const [searchAddress, setSearchAddress] = useState(false);
+
+  // handle submit
+  const onSubmit: SubmitHandler<ISignUpForm> = async (data) => {
+    const { user_id, password, password_check, user_name, email, phone, address, detail_address } = data;
+
+    // 아이디 검증 체크 유무 확인
+    if (idExist === 'unChecked') {
+      setError('user_id', { message: '아이디 중복확인이 필요합니다.' });
+      return false;
+    } else if (idExist === 'alreadyExist') {
+      setError('user_id', { message: '동일한 아이디가 존재합니다.' });
+      return false;
+    }
+    //
+    if (phoneValid === 'unChecked') {
+      setError('phone', { message: '휴대폰인증이 필요합니다.' });
+      return false;
+    } else if (phoneValid === 'denied') {
+      setError('phone', { message: '휴대폰 인증이 거부되었습니다.\n다시 시도 부탁 드립니다.' });
+      return false;
+    }
+
+    //
+    if (password !== password_check) {
+      setError('password', { message: '유효하지 않은 비밀번호 입니다.' });
+      return false;
+    }
+
+    const new_data = {
+      user_id: user_id.trim(),
+      password: password,
+      user_name: user_name.trim(),
+      email: email.trim(),
+      phone: typeof phone === 'string' ? phone.trim() : phone,
+      address: ` ${address.trim()}  ${detail_address !== undefined ? detail_address.trim() : ''}`,
+    };
+
+    console.log(new_data);
+  };
   return (
     <>
       <h1 className='sub_logo'>
@@ -44,7 +93,8 @@ export default function SignUp() {
       <div className='signup_wrap'>
         <h2 className='sub_title'>회원가입</h2>
 
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {/* 아이디 */}
           <div className='signup_input_con'>
             <label htmlFor='user_id'>아이디</label>
             <input
@@ -63,6 +113,9 @@ export default function SignUp() {
               아이디 중복확인
             </button>
           </div>
+          {errors.user_id && <ErrorMessage message={String(errors.user_id.message)} />}
+
+          {/* 비밀번호 */}
           <div className='signup_input_con'>
             <label htmlFor='password'>비밀번호</label>
             <input
@@ -78,6 +131,7 @@ export default function SignUp() {
               })}
             />
           </div>
+          {errors.password && <ErrorMessage message={String(errors.password.message)} />}
           <div className='signup_input_con'>
             <label htmlFor='password'>비밀번호 확인</label>
             <input
@@ -90,6 +144,9 @@ export default function SignUp() {
               })}
             />
           </div>
+          {errors.password_check && <ErrorMessage message={String(errors.password_check.message)} />}
+
+          {/* 이름 */}
           <div className='signup_input_con'>
             <label htmlFor='user_name'>이름</label>
             <input
@@ -99,21 +156,39 @@ export default function SignUp() {
               {...register('user_name', {
                 required: '이름을 입력해주세요.',
                 pattern: {
-                  value: /^[가-힣a-zA-Z]$/,
+                  value: /^[ㄱ-ㅎ가-힣a-zA-Z]*$/,
                   message: '한글 또는 영문으로 입력해주세요',
                 },
               })}
             />
           </div>
+          {errors.user_name && <ErrorMessage message={String(errors.user_name.message)} />}
+
+          {/* 주소 */}
           <div className='signup_input_con'>
             <label htmlFor='address'>주소</label>
-            <button type='button' className='valid_check_btn'>
+            <input
+              type='text'
+              id='address'
+              value={userAddress}
+              {...register('address', {
+                required: '주소 검색 후 입력해주세요.',
+                value: userAddress && userAddress,
+              })}
+              onClick={() => setSearchAddress((prev) => !prev)}
+            />
+            <button type='button' className='valid_check_btn' onClick={() => setSearchAddress((prev) => !prev)}>
               주소 검색
             </button>
-            <div>
-              <input type='text' name='detail_address' id='detail_address' placeholder='상세주소 입력' />
-            </div>
+            {/* search post modal */}
           </div>
+          {searchAddress && <SearchPost setUserAddress={setUserAddress} setSearchAddress={setSearchAddress} />}
+          <div className='signup_input_con detail_address_con'>
+            <input type='text' id='detail_address' placeholder='상세주소 입력' {...register('detail_address')} />
+          </div>
+          {errors.address && <ErrorMessage message={String(errors.address.message)} />}
+
+          {/* 이메일 */}
           <div className='signup_input_con'>
             <label htmlFor='email'>이메일</label>
             <input
@@ -129,6 +204,9 @@ export default function SignUp() {
               })}
             />
           </div>
+          {errors.email && <ErrorMessage message={String(errors.email.message)} />}
+
+          {/* 휴대폰 */}
           <div className='signup_input_con'>
             <label htmlFor='phone'>휴대폰</label>
             <input
@@ -138,7 +216,7 @@ export default function SignUp() {
               {...register('phone', {
                 required: '휴대폰번호를 입력해주세요.',
                 pattern: {
-                  value: /^\d{3}-\d{(3, 4)}-\d{4}$/,
+                  value: /^([0-9]{3})-?([0-9]{3,4})-?([0-9]{4})$/,
                   message: '하이픈(-)을 포함해 입력해주세요',
                 },
               })}
@@ -147,9 +225,11 @@ export default function SignUp() {
               인증번호 받기
             </button>
           </div>
+          {errors.phone && <ErrorMessage message={String(errors.phone.message)} />}
+
           <Button
             btn_name='가입 완료'
-            btn_style='bg-orange-500 text-white my-7 hover:bg-orange-300'
+            btn_style='bg-orange-500 text-white my-7 hover:bg-orange-300 max-w-sm mx-auto mt-20'
             btn_type='submit'
           />
         </form>

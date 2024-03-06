@@ -1,7 +1,10 @@
-import React from 'react'
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Logo() {
   return (
-    <div className='logo'>Logo</div>
-  )
+    <div className='logo'>
+      <Link to='/'>Logo</Link>
+    </div>
+  );
 }
