@@ -12,6 +12,9 @@ export default {
       animation: {
         fadeInOut: 'aFadeInOut 3.5s ease-in-out 1 forwards',
       },
+      width: {
+        '48%': '48%',
+      },
     },
   },
   plugins: [],

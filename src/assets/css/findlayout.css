@@ -1,0 +1,12 @@
+#user_findwrap {
+  @apply flex flex-col justify-center items-center max-w-xl mx-auto w-4/5 min-w-80;
+}
+.find_tab_btn_wrap {
+  @apply w-full flex items-center justify-between mt-10 mb-3;
+}
+.find_con {
+  @apply w-full;
+}
+.find_info {
+  @apply text-gray-400 w-full text-left font-semibold;
+}

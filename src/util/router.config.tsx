@@ -9,6 +9,8 @@ import SignUp from '../../pages/signup/SignUp';
 import Login from '../../pages/Login/Login';
 import WrongPath from '../../pages/Error/WrongPath';
 import Logout from '../../pages/Logout/Logout';
+import UserLayout from '../layout/UserLayout';
+import FindLayout from '../../pages/FindUser/FindLayout';
 
 export const router = createBrowserRouter([
   {
@@ -30,4 +32,20 @@ export const router = createBrowserRouter([
   },
   { path: '/login', element: <Login />, errorElement: <WrongPath /> },
   { path: '/logout', element: <Logout />, errorElement: <WrongPath /> },
+  // users
+  {
+    path: '/users/',
+    element: <UserLayout />,
+    errorElement: <Error404 />,
+    children: [
+      {
+        path: '/users/find-user',
+        element: <FindLayout />,
+      },
+      {
+        path: '/users/find-password',
+        element: <FindLayout />,
+      },
+    ],
+  },
 ]);
