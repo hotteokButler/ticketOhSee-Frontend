@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { Reset } from 'styled-reset';
 import { router } from './util/router.config';
