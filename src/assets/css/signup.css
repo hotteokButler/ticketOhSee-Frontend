@@ -25,3 +25,9 @@
 .valid_check_btn {
   @apply absolute top-1/2 right-0 -translate-y-1/2 text-xs leading-normal tracking-tight text-white bg-slate-400 inline-block py-1 px-2 rounded-sm hover:bg-slate-900;
 }
+.email_input_con select {
+  @apply w-1/4;
+}
+.email_input_con input {
+  @apply w-55%;
+}

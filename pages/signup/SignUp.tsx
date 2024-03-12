@@ -6,6 +6,14 @@ import Button from '../../src/components/Button';
 import SearchPost from '../../src/components/SearchPost';
 import ErrorMessage from '../../src/components/ErrorMessage';
 
+const emailSelection: { [key: string]: string } = {
+  self: '직접입력',
+  naver: '@naver.com',
+  hanmail: '@hanmail.com',
+  gmail: '@gmail.com',
+  nate: '@nate.com',
+  hotmail: '@hotmail.com',
+};
 
 interface ISignUpForm {
   user_id: string;
@@ -16,6 +24,7 @@ interface ISignUpForm {
   phone: number | string;
   address: string;
   detail_address?: string;
+  email_selection?: { [key: string]: string } | string;
 }
 
 type IdExistType = 'unChecked' | 'canUse' | 'alreadyExist';
@@ -28,7 +37,7 @@ export default function SignUp() {
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm<ISignUpForm>({ mode: 'all' });
+  } = useForm<ISignUpForm>({ mode: 'all', defaultValues: { email_selection: emailSelection.self } });
 
   //아이디 중복체크
   const [idExist, setIdExist] = useState<IdExistType>('unChecked');
@@ -50,7 +59,7 @@ export default function SignUp() {
 
   // handle submit
   const onSubmit: SubmitHandler<ISignUpForm> = async (data) => {
-    const { user_id, password, password_check, user_name, email, phone, address, detail_address } = data;
+    const { user_id, password, password_check, user_name, email, phone, address, detail_address,email_selection} = data;
 
     // 아이디 검증 체크 유무 확인
     if (idExist === 'unChecked') {
@@ -79,7 +88,7 @@ export default function SignUp() {
       user_id: user_id.trim(),
       password: password,
       user_name: user_name.trim(),
-      email: email.trim(),
+      email: email_selection !== emailSelection.self ? email.trim() + email_selection : email.trim(),
       phone: typeof phone === 'string' ? phone.trim() : phone,
       address: ` ${address.trim()}  ${detail_address !== undefined ? detail_address.trim() : ''}`,
     };
@@ -190,7 +199,7 @@ export default function SignUp() {
           {errors.address && <ErrorMessage message={String(errors.address.message)} />}
 
           {/* 이메일 */}
-          <div className='signup_input_con'>
+          <div className='signup_input_con email_input_con'>
             <label htmlFor='email'>이메일</label>
             <input
               type='text'
@@ -198,12 +207,30 @@ export default function SignUp() {
               placeholder='이메일'
               {...register('email', {
                 required: '이메일을 입력해주세요.',
-                pattern: {
-                  value: /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i,
-                  message: '이메일이 형식에 맞지 않습니다',
+                // pattern: {
+                //   value: /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i ,
+                //   message: '이메일이 형식에 맞지 않습니다',
+                // },
+                validate: {
+                  emailSelected: (val) => {
+                    const regexWithoutConfig = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+$/;
+                    const regexWithConfig = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i;
+                    let test =
+                      watch().email_selection === emailSelection.self
+                        ? regexWithConfig.test(val)
+                        : regexWithoutConfig.test(val);
+                    return test ? true : '이메일이 형식에 맞지 않습니다.';
+                  },
                 },
               })}
             />
+            <select id='email_select' {...register('email_selection')}>
+              {Object.keys(emailSelection).map((elem, idx) => (
+                <option value={emailSelection[elem]} key={idx}>
+                  {emailSelection[elem]}
+                </option>
+              ))}
+            </select>
           </div>
           {errors.email && <ErrorMessage message={String(errors.email.message)} />}
 
