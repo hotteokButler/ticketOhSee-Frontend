@@ -6,7 +6,6 @@ export default function FindUser() {
     <>
       <p className='find_info'>* 아이디를 찾을 방법을 선택해 주세요.</p>
       <FindToggle/>
-
     </>
   );
 }

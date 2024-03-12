@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 
 export interface IFindToggle {
-  setToggleAction: Dispatch<SetStateAction<boolean>>;
+  setToggleAction?: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function FindToggle(props: IFindToggle) {
