@@ -6,6 +6,7 @@ import Button from '../../src/components/Button';
 import SearchPost from '../../src/components/SearchPost';
 import ErrorMessage from '../../src/components/ErrorMessage';
 
+
 interface ISignUpForm {
   user_id: string;
   password: string;
@@ -17,8 +18,8 @@ interface ISignUpForm {
   detail_address?: string;
 }
 
-type IIdExistEnum = 'unChecked' | 'canUse' | 'alreadyExist';
-type IPhoneValificationEnum = 'unChecked' | 'checked' | 'denied';
+type IdExistType = 'unChecked' | 'canUse' | 'alreadyExist';
+type PhoneValificationType = 'unChecked' | 'checked' | 'denied';
 
 export default function SignUp() {
   const {
@@ -30,14 +31,14 @@ export default function SignUp() {
   } = useForm<ISignUpForm>({ mode: 'all' });
 
   //아이디 중복체크
-  const [idExist, setIdExist] = useState<IIdExistEnum>('unChecked');
+  const [idExist, setIdExist] = useState<IdExistType>('unChecked');
   const checkIdExists = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setIdExist('canUse');
   };
 
   //전화번호 인증 확인체크
-  const [phoneValid, setPhoneValid] = useState<IPhoneValificationEnum>('unChecked');
+  const [phoneValid, setPhoneValid] = useState<PhoneValificationType>('unChecked');
   const checkValidPhone = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setPhoneValid('checked');
