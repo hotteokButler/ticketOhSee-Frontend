@@ -207,10 +207,6 @@ export default function SignUp() {
               placeholder='이메일'
               {...register('email', {
                 required: '이메일을 입력해주세요.',
-                // pattern: {
-                //   value: /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i ,
-                //   message: '이메일이 형식에 맞지 않습니다',
-                // },
                 validate: {
                   emailSelected: (val) => {
                     const regexWithoutConfig = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+$/;
