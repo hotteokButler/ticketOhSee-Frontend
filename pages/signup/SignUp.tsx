@@ -36,6 +36,8 @@ export default function SignUp() {
     watch,
     handleSubmit,
     setError,
+    clearErrors,
+    reset,
     formState: { errors },
   } = useForm<ISignUpForm>({ mode: 'all', defaultValues: { email_selection: emailSelection.self } });
 
@@ -59,7 +61,8 @@ export default function SignUp() {
 
   // handle submit
   const onSubmit: SubmitHandler<ISignUpForm> = async (data) => {
-    const { user_id, password, password_check, user_name, email, phone, address, detail_address,email_selection} = data;
+    const { user_id, password, password_check, user_name, email, phone, address, detail_address, email_selection } =
+      data;
 
     // 아이디 검증 체크 유무 확인
     if (idExist === 'unChecked') {
@@ -94,6 +97,8 @@ export default function SignUp() {
     };
 
     console.log(new_data);
+
+    reset();
   };
   return (
     <>
@@ -185,9 +190,15 @@ export default function SignUp() {
                 required: '주소 검색 후 입력해주세요.',
                 value: userAddress && userAddress,
               })}
-              onClick={() => setSearchAddress((prev) => !prev)}
             />
-            <button type='button' className='valid_check_btn' onClick={() => setSearchAddress((prev) => !prev)}>
+            <button
+              type='button'
+              className='valid_check_btn'
+              onClick={() => {
+                setSearchAddress((prev) => !prev);
+                clearErrors('address');
+              }}
+            >
               주소 검색
             </button>
             {/* search post modal */}
