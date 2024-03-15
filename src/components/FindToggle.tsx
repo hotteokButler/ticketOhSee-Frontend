@@ -1,6 +1,7 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { useState } from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
-import { ChangeHandler, RegisterOptions, SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import ErrorMessage from './ErrorMessage';
 
 interface IFindToggleForm {
   user_id?: string;
@@ -9,64 +10,76 @@ interface IFindToggleForm {
   phone?: number | string;
 }
 
-interface IFindInputObj {
-  name: keyof IFindToggleForm;
+interface IFindInputObj<T> {
+  name: keyof T;
   required?: boolean;
   key?: number;
   type?: string;
   placeholder?: string | undefined;
 }
 
-interface IFindToggle {
+interface IFindToggle<T> {
   toggle_title: string;
-  find_input_data?: Array<IFindInputObj>;
-  setToggleAction?: Dispatch<SetStateAction<boolean>>;
+  field_name?: string | undefined;
+  find_input_data?: Array<T>;
 }
 
-const findTestObj: Array<IFindInputObj> = [
-  {
-    type: 'text',
-    name: 'user_name',
-    placeholder: '이름',
-  },
-  {
-    type: 'email',
-    name: 'email',
-    placeholder: '이메일',
-  },
-];
-
-export default function FindToggle(props: IFindToggle) {
-  const { toggle_title, setToggleAction, find_input_data } = props;
+export default function FindToggle(props: IFindToggle<IFindInputObj<IFindToggleForm>>) {
+  const [toggleActive, setToggleActive] = useState(false);
+  const { toggle_title, field_name, find_input_data } = props;
   const {
     register: find_register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors: find_errors },
   } = useForm<IFindToggleForm>({ mode: 'onChange' });
 
-  const onSubmit: SubmitHandler<IFindToggleForm> = () => {};
+  const handleToggleActive = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    setToggleActive((prev) => !prev);
+  };
+  const onSubmit: SubmitHandler<IFindToggleForm> = (data) => {
+    console.log(data);
+    reset();
+  };
   return (
     <>
       <div className='find_toggle_con'>
-        <h4 className='toggle_title'>
+        <h4
+          className={`toggle_title ${toggleActive ? 'bg-gray-500 text-white' : 'bg-gray-300'}`}
+          onClick={handleToggleActive}
+        >
           {toggle_title}
-          <button type='button'>
+          <button
+            type='button'
+            className={`${toggleActive ? 'rotate-0' : 'rotate-180'} find_btn
+          `}
+          >
             <IoIosArrowDown />
           </button>
         </h4>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {findTestObj &&
-            findTestObj.map((elem, idx) => (
-              <input
-                key={idx}
-                type={elem.type || 'text'}
-                placeholder={elem.placeholder || ''}
-                {...find_register(`${elem.name}`, { validate: (val) => (val ? true : '필수입력값입니다') })}
-              ></input>
-            ))}
-          <button type='submit'>확인</button>
-        </form>
+        <div className={`find_form_con ${toggleActive ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+          <form onSubmit={handleSubmit(onSubmit)} className='overflow-hidden' name={field_name}>
+            {find_input_data &&
+              find_input_data.map((elem, idx) => {
+                const elemKey = elem.name;
+                return (
+                  <div key={idx}>
+                    <input
+                      type={elem.type || 'text'}
+                      placeholder={elem.placeholder || ''}
+                      {...find_register(`${elemKey}`, {
+                        validate: (val) => (val ? true : '필수입력값입니다'),
+                      })}
+                    />
+                    {elemKey in find_errors && <ErrorMessage message={String(find_errors[elemKey]?.message)} />}
+                  </div>
+                );
+              })}
+            <button type='submit'>확인</button>
+          </form>
+          {toggleActive && <hr className='find_hr' />}
+        </div>
       </div>
     </>
   );

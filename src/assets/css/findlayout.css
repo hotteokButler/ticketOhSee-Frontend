@@ -10,3 +10,29 @@
 .find_info {
   @apply text-gray-400 w-full text-left font-semibold;
 }
+.toggle_title {
+  @apply w-full flex justify-between items-center text-base font-semibold p-4 mt-5 mb-3 transition-all duration-300 rounded-sm;
+}
+.toggle_title button {
+  @apply text-xl;
+}
+.find_btn {
+  @apply transition-all duration-300;
+}
+.find_form_con {
+  @apply grid transition-[grid-template-rows] duration-300;
+}
+.find_form_con form {
+  @apply flex flex-col w-full;
+}
+.find_form_con button {
+  @apply block  w-full bg-orange-400 text-white text-lg py-4 my-2 rounded-sm hover:opacity-75;
+}
+
+.find_form_con input {
+  @apply w-full rounded-sm border border-gray-200 py-4 px-3 mb-1;
+}
+
+.find_hr {
+  @apply block mb-2;
+}
