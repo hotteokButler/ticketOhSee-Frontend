@@ -1,5 +1,5 @@
 import React from 'react';
-import FindToggle from '../../src/components/FindToggle';
+import FindToggle from './FindToggle';
 
 export default function FindPassword() {
   return (

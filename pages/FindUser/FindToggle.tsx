@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import ErrorMessage from './ErrorMessage';
+import ErrorMessage from '../../src/components/ErrorMessage';
 
 interface IFindToggleForm {
   user_id?: string;
